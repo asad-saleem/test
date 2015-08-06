@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 
 
+
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
 
+import com.ehr.data.Registration;
 import com.ehr.data.User;
 
 public class UserService{
@@ -132,5 +134,37 @@ public class UserService{
 		return false;
 		}
 		return true;
+	}
+	
+	public void registerUser(int id, String name,String firstName, String lastName,int age, String country, String city, String email, String postelAddress, String contact1, String contact2, String contact3, String gender,String userName, String password, String rePassword){
+		Registration registration = new Registration();
+		
+		registration.setName(name);
+		registration.setAge(age);
+		registration.setCity(city);
+		registration.setContact1(contact1);
+		registration.setContact2(contact2);
+		registration.setContact3(contact3);
+		registration.setCountry(country);
+		registration.setEmail(email);
+		registration.setFirstName(firstName);
+		registration.setGander(gender);
+		registration.setLastName(lastName);
+		registration.setPassword(password);
+		registration.setPostalAdress(postelAddress);
+		registration.setReEnterPassword(rePassword);
+		registration.setUserName(userName);
+	
+		
+		SessionFactory session_factory = new Configuration().configure().buildSessionFactory();
+		
+		Session session = session_factory.openSession();
+		
+		session.beginTransaction();
+		session.save(registration);
+	
+		session.getTransaction().commit();
+	
+		session.close();
 	}
 }
