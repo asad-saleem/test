@@ -68,13 +68,13 @@ public class UserService{
 	/* Delete User from Database */
 	
 	public void removeUser(int id){
-		User user = new User();
+		//User user = new User();
 		try{
         	sessionFactory = new Configuration().configure().buildSessionFactory();
         	session = sessionFactory.openSession();
         	session.beginTransaction();
-    		user = (User)session.get(User.class, new Integer(id));
-    		session.delete(user);
+    		//user = (User)session.get(User.class, new Integer(id));
+    		session.delete(session.get(User.class, new Integer(id)));
         	session.getTransaction().commit();
         	session.close();
         }catch(Exception e){
@@ -99,5 +99,38 @@ public class UserService{
 			ex.printStackTrace();
 		}
 		return user;
-	}	
+	}
+	public boolean checkUserNameExistance(String name){
+		User user = new User();	
+		SessionFactory sf = new Configuration().configure().buildSessionFactory();
+		Session s = sf.openSession();
+		ArrayList<User> users = new ArrayList<User>();
+		users = (ArrayList<User>) s.createCriteria(User.class).list();
+		int count=0;
+		for(int i=1; i<=users.size(); i++){
+			user=(User) s.get(User.class, i);
+			if(name.equals(user.getName())){	
+				count++;
+			}
+		}
+		if(count==0){
+		SessionFactory session_factory = new Configuration().configure().buildSessionFactory();
+		
+		Session session = session_factory.openSession();
+		
+		session.beginTransaction();
+		user.setName(name);
+		session.save(user);
+		
+		session.getTransaction().commit();
+		
+		session.close();
+		return true;
+		}
+	if(count>0){
+		System.out.println("Name already exists");
+		return false;
+		}
+		return true;
+	}
 }
