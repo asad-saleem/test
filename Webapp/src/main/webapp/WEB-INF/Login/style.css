@@ -39,6 +39,9 @@ input.ng-invalid.ng-dirty{
 input.ng-valid.ng-dirty{
     border: 1px solid green;
 }
+#age{
+    border-radius: 25px;
+}
 #error{
     visibility: hidden;
 }
