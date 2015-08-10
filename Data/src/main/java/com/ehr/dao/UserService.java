@@ -1,13 +1,11 @@
 package com.ehr.dao;
 
 import java.util.ArrayList;
-
-
-
-
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.ehr.data.Registration;
 import com.ehr.data.User;
@@ -16,10 +14,15 @@ public class UserService{
 	SessionFactory sessionFactory = null;
 	Session session = null;
 	
+	ApplicationContext context = new  ClassPathXmlApplicationContext("spring.xml");
+	User user  = (User)context.getBean("User");
+	ArrayList<User> users =  (ArrayList<User>) context.getBean("arrayList_users");
+	
+	
 	/* Get all users from database */
 
 	public ArrayList<User> getAllUser(){
-		ArrayList<User> users = new ArrayList<User>();
+		
 		try{
 			sessionFactory = new Configuration().configure().buildSessionFactory();
 			session = sessionFactory.openSession();
@@ -34,8 +37,8 @@ public class UserService{
 	/* get particular user record from database through id */
 	
 	public User getUserData(int id){
-		User user = new User();
-        String name=null;
+		
+		String name=null;
         try{
         	sessionFactory = new Configuration().configure().buildSessionFactory();
         	session = sessionFactory.openSession();
@@ -70,7 +73,7 @@ public class UserService{
 	/* Delete User from Database */
 	
 	public void removeUser(int id){
-		//User user = new User();
+		
 		try{
         	sessionFactory = new Configuration().configure().buildSessionFactory();
         	session = sessionFactory.openSession();
@@ -103,10 +106,9 @@ public class UserService{
 		return user;
 	}
 	public boolean checkUserNameExistance(String name){
-		User user = new User();	
+		
 		SessionFactory sf = new Configuration().configure().buildSessionFactory();
 		Session s = sf.openSession();
-		ArrayList<User> users = new ArrayList<User>();
 		users = (ArrayList<User>) s.createCriteria(User.class).list();
 		int count=0;
 		for(int i=1; i<=users.size(); i++){

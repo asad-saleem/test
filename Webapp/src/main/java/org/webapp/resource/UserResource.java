@@ -1,7 +1,6 @@
 package org.webapp.resource;
 
 import java.util.ArrayList;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,19 +10,18 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-
-
 import com.ehr.dao.UserService;
 import com.ehr.data.User;
-
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 @Path ("users")
 public class UserResource {
 	
-	UserService user = new UserService();
+	ApplicationContext context = new  ClassPathXmlApplicationContext("spring.xml");
+	UserService user  = (UserService)context.getBean("user_service");
+	
 	
 	/* return all users from database */
 	@GET
